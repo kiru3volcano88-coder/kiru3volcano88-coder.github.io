@@ -5,6 +5,11 @@
 <title>OffshoreLink への招待</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="../logo.png"><link rel="stylesheet" href="../site.css">
+<style>
+  .big { display:block; text-align:center; padding:16px 20px; border-radius:14px; background:var(--accent); color:#071013; font-weight:700; font-size:18px; text-decoration:none; margin:8px 0 10px; }
+  .steps li { margin-bottom:6px; }
+  #status { color:var(--ink2); font-size:14px; }
+</style>
 </head>
 <body><main>
   <header class="brand"><img src="../logo.png" alt=""><span class="name">OFFSHORE LINK</span></header>
@@ -13,29 +18,52 @@
 
   <section>
     <h2>アプリが入っている方</h2>
-    <p>このページが開いたときは、アプリが自動で開かなかったようです。次の方法をお試しください。</p>
-    <ul>
-      <li>LINEなどで届いたリンクを、<strong>もう一度、タップ</strong>してください。</li>
-      <li>それでも開かないときは、リンクを<strong>長押し→「Safari で開く」</strong>を選び、開いたページの上部の「アプリで開く」を押してください。</li>
-      <li>または、届いた文面の<strong>リンクをコピー</strong>して、アプリの「グループ」→「招待から参加」→「リンクから参加」に貼り付けてください。</li>
-    </ul>
+    <a id="open" class="big" href="#">OffshoreLink で開く</a>
+    <p id="status">アプリを開いています…</p>
+    <p class="note">開かないときは、上のボタンをもう一度押してください。それでも開かない場合は、画面の右下（または右上）の「…」から<strong>「Safari で開く」</strong>を選び、開いたあと、もう一度、上のボタンを押してください。</p>
   </section>
 
   <section>
     <h2>アプリがまだの方</h2>
-    <ol>
+    <ol class="steps">
       <li>App Store で「OffshoreLink」を入れる（iPhone）。</li>
-      <li>アプリを入れたあと、<strong>この招待リンクを、もう一度タップ</strong>します。</li>
+      <li>アプリを入れたあと、この招待リンクを、もう一度タップ（または、上の「OffshoreLink で開く」を押す）。</li>
       <li>参加の確認が出たら、「参加する」を押します。</li>
     </ol>
-    <p class="note">招待には、iPhone で iCloud にサインインしている必要があります。招待を送った人が、参加の許可を、閉じている場合は、参加できません。送った人にご確認ください。</p>
+    <p class="note">参加には、iPhone で iCloud にサインインしている必要があります。招待した人が、リンクで参加できる設定を、閉じている場合は、参加できません。招待した人にご確認ください。</p>
   </section>
 
   <section>
-    <h2>お問い合わせ</h2>
+    <h2>それでもうまくいかないとき</h2>
+    <p>届いた文面の<strong>リンクをコピー</strong>して、アプリの「グループ」→「招待から参加」に貼り付けて、申請・参加してください。</p>
     <p><a href="../support/">サポート</a>　／　<a href="../privacy/">プライバシーポリシー</a></p>
   </section>
 
   <footer>© 2026 OffshoreLink</footer>
-</main></body>
-</html>
+</main>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search);
+  var s = q.get('s');
+  var btn = document.getElementById('open');
+  var st = document.getElementById('status');
+  if (!s || s.indexOf('icloud.com') < 0) {
+    btn.style.display = 'none';
+    st.textContent = '招待リンクが読み取れません。届いたリンクが、途中で切れていないか、ご確認ください。';
+    return;
+  }
+  // アプリのリンク（カスタム URL スキーム）。LINEなどのアプリ内ブラウザは、ユニバーサルリンクを、アプリに渡さないことがあるため、こちらで、アプリを起動する
+  var appURL = 'offshorelink://join?s=' + encodeURIComponent(s);
+  btn.setAttribute('href', appURL);
+  var tried = false;
+  function openApp() {
+    tried = true;
+    location.href = appURL;
+    setTimeout(function () { st.textContent = 'アプリが開かない場合は、アプリが入っているかご確認ください。入っていない方は、下の手順で、アプリを入れてください。'; }, 2500);
+  }
+  btn.addEventListener('click', function () { st.textContent = 'アプリを開いています…'; });
+  // ページを開いたら、自動で、アプリを開く
+  setTimeout(openApp, 300);
+})();
+</script>
+</body></html>
