@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["CUYG985WN4.com.junion02.offshorelink"],
+        "components": [
+          { "/": "/offshorelink/join/*", "comment": "OffshoreLink の招待リンク" },
+          { "/": "/offshorelink/join", "comment": "OffshoreLink の招待リンク（末尾の/なし）" }
+        ]
+      }
+    ]
+  }
+}
